@@ -48,6 +48,14 @@ const AddChannelButton = styled(Button)`
   margin-left: auto;
 `
 
+const FullVerticalContainer = styled(Box)`
+    height: 100vh;
+`
+
+const ShrinkContainer = styled(Box)`
+    flex-shrink: 1;
+    overflow: auto;
+`
 const LoadingComponent = () => (
   <Box full='vertical' justify='center' align='center'>
     <HashLoader color='#e02438' loading />
@@ -73,7 +81,7 @@ const ChatRoom = ({ url, url: { query: { channel = 'general' } } }) => (
                     <Title>
                       TallerChat <ChatIcon />
                     </Title>
-
+                    
                     <NewChannelContainer channels={ channels }>
                       { create => (
                         <AddChannelButton
@@ -109,25 +117,27 @@ const ChatRoom = ({ url, url: { query: { channel = 'general' } } }) => (
                 ) : (
                   <MessagesContainer channel={ channels.find(({ name }) => name === channel) }>
                     { ({ loading, messages }) => (
-                      <Box full='vertical'>
+                      <FullVerticalContainer>
                         <StyledRoomHeader pad={ { vertical: 'small', horizontal: 'medium' } } justify='between'>
                           <Title>
                             { '#' + channel }
                           </Title>
                         </StyledRoomHeader>
 
-                        <Box pad='medium' flex='grow'>
-                          { loading ? 'Loading...' : (
-                            messages.length === 0 ? 'No one talking here yet :(' : (
-                              messages.map(({ id, author, message }) => (
-                                <Box key={ id } pad='small' credit={ author }>
-                                  <StyledAuthor>{ author }</StyledAuthor>
-                                  <StyledMessage>{ message }</StyledMessage>
-                                </Box>
-                              ))
-                            )
-                          ) }
-                        </Box>
+                        <ShrinkContainer flex='grow' justify='start'>
+                            <Box pad='medium' flex='grow'>
+                            { loading ? 'Loading...' : (
+                                messages.length === 0 ? 'No one talking here yet :(' : (
+                                messages.map(({ id, author, message }) => (
+                                    <Box key={ id } pad='small' credit={ author }>
+                                    <StyledAuthor>{ author }</StyledAuthor>
+                                    <StyledMessage>{ message }</StyledMessage>
+                                    </Box>
+                                ))
+                                )
+                            ) }
+                            </Box>
+                        </ShrinkContainer>
 
                         <Box pad='medium' direction='column'>
                           { user && user.uid ? (
@@ -148,7 +158,7 @@ const ChatRoom = ({ url, url: { query: { channel = 'general' } } }) => (
                             'Log in to post messages'
                           ) }
                         </Box>
-                      </Box>
+                      </FullVerticalContainer>
                     ) }
                   </MessagesContainer>
                 ) }

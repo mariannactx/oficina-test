@@ -72,7 +72,7 @@ RUN sudo cp -R /root/.composer /${USER_NAME}/.composer \
 # Setup default App variables.
 # ----------------------------
 
-ENV GRAPHQL_HOST="http://localhost/graphql"
+ENV GRAPHQL_HOST="http://172.18.0.3/graphql"
 
 # Configure entrypoint.
 # ---------------------

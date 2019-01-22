@@ -48,6 +48,13 @@ const StyledAuthor = styled(Label)`
 const StyledTextInput = styled(TextInput)`
   width: 100%;
 `
+const FullVerticalSidebar = styled(Sidebar)`
+    height: 100vh;
+`
+const ShrinkMenuContainer = styled(Box)`
+    flex-shrink: 1;
+    overflow: auto;
+`
 
 const AddChannelButton = styled(Button)`
   margin-left: auto;
@@ -61,6 +68,9 @@ const ShrinkContainer = styled(Box)`
     flex-shrink: 1;
     overflow: auto;
     margin-top: 14px
+`
+const NoShrinkFooter = styled(Footer)`
+    flex-shrink: 0;
 `
 const LoadingComponent = () => (
   <Box full='vertical' justify='center' align='center'>
@@ -82,7 +92,7 @@ const ChatRoom = ({ url, url: { query: { channel = 'general' } } }) => (
           (loading && !channels.length) ? <LoadingComponent /> : (
             <App centered={ false }>
               <Split fixed flex='right'>
-                <Sidebar colorIndex='neutral-1'>
+                <FullVerticalSidebar colorIndex='neutral-1'>
                   <Header pad='medium'>
                     <Title>
                       TallerChat <ChatIcon />
@@ -100,7 +110,7 @@ const ChatRoom = ({ url, url: { query: { channel = 'general' } } }) => (
                     </NewChannelContainer>
                   </Header>
 
-                  <Box flex='grow' justify='start'>
+                  <ShrinkMenuContainer flex='grow' justify='start'>
                     <Menu primary>
                       { channels.map(({ name }) => (
                         <Link key={ name } prefetch href={ `/messages/${name}` }>
@@ -110,13 +120,13 @@ const ChatRoom = ({ url, url: { query: { channel = 'general' } } }) => (
                         </Link>
                       )) }
                     </Menu>
-                  </Box>
+                  </ShrinkMenuContainer>
 
-                  <Footer pad='medium'>
+                  <NoShrinkFooter pad='medium'>
                     <Button icon={ <UserIcon /> } onClick={ console.log } />
                     <Button icon={ <LogoutIcon /> } onClick={ console.log } />
-                  </Footer>
-                </Sidebar>
+                  </NoShrinkFooter>
+                </FullVerticalSidebar>
 
                 { !user || !user.uid ? (
                   <LoadingComponent />

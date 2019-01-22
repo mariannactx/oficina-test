@@ -36,6 +36,11 @@ const StyledMessage = styled(Paragraph)`
   margin: 0;
 `
 
+const NewMessageBox = styled(Box)`
+    flex-shrink: 0;
+    padding: 14px 24px;
+`
+
 const StyledAuthor = styled(Label)`
   margin: 0;
 `
@@ -55,6 +60,7 @@ const FullVerticalContainer = styled(Box)`
 const ShrinkContainer = styled(Box)`
     flex-shrink: 1;
     overflow: auto;
+    margin-top: 14px
 `
 const LoadingComponent = () => (
   <Box full='vertical' justify='center' align='center'>
@@ -139,7 +145,7 @@ const ChatRoom = ({ url, url: { query: { channel = 'general' } } }) => (
                             </Box>
                         </ShrinkContainer>
 
-                        <Box pad='medium' direction='column'>
+                        <NewMessageBox pad='medium' direction='column'>
                           { user && user.uid ? (
                             <NewMessageContainer
                               user={ user }
@@ -157,7 +163,7 @@ const ChatRoom = ({ url, url: { query: { channel = 'general' } } }) => (
                           ) : (
                             'Log in to post messages'
                           ) }
-                        </Box>
+                        </NewMessageBox>
                       </FullVerticalContainer>
                     ) }
                   </MessagesContainer>

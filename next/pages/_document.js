@@ -18,7 +18,7 @@ export default class MyDocument extends Document {
 
   render () {
     return (
-      <html>
+      <html style={{overflowY: "hidden"}}>
         <Head>
           <meta httpEquiv='x-ua-compatible' content='ie=edge' />
 
@@ -27,6 +27,7 @@ export default class MyDocument extends Document {
           <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
           <link rel='icon' type='image/png' href='/static/favicon.png' />
           <link key='grommet-css' href='//cdnjs.cloudflare.com/ajax/libs/grommet/1.0.1/grommet.min.css' rel='stylesheet' type='text/css' />
+          <link href='/static/channel.css' rel='stylesheet' type='text/css' />
 
           <script dangerouslySetInnerHTML={ { __html: `window.envConfig = ${JSON.stringify(envConfig)}` } } />
 

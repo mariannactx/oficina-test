@@ -86,105 +86,107 @@ import NewChannelContainer from 'app/modules/channel/containers/NewChannelContai
 
 const ChatRoom = ({ url, url: { query: { channel = 'general' } } }) => (
   <CurrentUserContainer>
-    { ({ user }) => (
-      <ChannelsContainer>
-        { ({ loading, channels }) => (
-          (loading && !channels.length) ? <LoadingComponent /> : (
-            <App centered={ false }>
-              <Split fixed flex='right'>
-                <FullVerticalSidebar colorIndex='neutral-1'>
-                  <Header pad='medium'>
-                    <Title>
-                      TallerChat <ChatIcon />
-                    </Title>
-                    
-                    <NewChannelContainer channels={ channels }>
-                      { create => (
-                        <AddChannelButton
-                          icon={ <AddCircleIcon /> }
-                          onClick={ () => create(
-                            window.prompt('Name your new channel')
-                          ) }
-                        />
-                      ) }
-                    </NewChannelContainer>
-                  </Header>
-
-                  <ShrinkMenuContainer flex='grow' justify='start'>
-                    <Menu primary>
-                      { channels.map(({ name }) => (
-                        <Link key={ name } prefetch href={ `/messages/${name}` }>
-                          <Anchor className={ channel === name ? 'active' : '' }>
-                            # <b>{ name }</b>
-                          </Anchor>
-                        </Link>
-                      )) }
-                    </Menu>
-                  </ShrinkMenuContainer>
-
-                  <NoShrinkFooter pad='medium'>
-                    <Button icon={ <UserIcon /> } onClick={ console.log } />
-                    <Button icon={ <LogoutIcon /> } onClick={ console.log } />
-                  </NoShrinkFooter>
-                </FullVerticalSidebar>
-
-                { !user || !user.uid ? (
-                  <LoadingComponent />
-                ) : (
-                  <MessagesContainer channel={ channels.find(({ name }) => name === channel) }>
-                    { ({ loading, messages }) => (
-                      <FullVerticalContainer>
-                        <StyledRoomHeader pad={ { vertical: 'small', horizontal: 'medium' } } justify='between'>
-                          <Title>
-                            { '#' + channel }
-                          </Title>
-                        </StyledRoomHeader>
-
-                        <ShrinkContainer flex='grow' justify='start'>
-                            <Box pad='medium' flex='grow'>
-                            { loading ? 'Loading...' : (
-                                messages.length === 0 ? 'No one talking here yet :(' : (
-                                messages.map(({ id, author, message }) => (
-                                    <Box key={ id } pad='small' credit={ author }>
-                                    <StyledAuthor>{ author }</StyledAuthor>
-                                    <StyledMessage>{ message }</StyledMessage>
-                                    </Box>
-                                ))
-                                )
-                            ) }
-                            </Box>
-                        </ShrinkContainer>
-
-                        <NewMessageBox pad='medium' direction='column'>
-                          { user && user.uid ? (
-                            <NewMessageContainer
-                              user={ user }
-                              channel={ channels.find(({ name }) => name === channel) }
-                            >
-                              { ({ handleSubmit }) => (
-                                <form onSubmit={ handleSubmit }>
-                                  <NewMessageContainer.Message
-                                    placeHolder='Message #general'
-                                    component={ StyledTextInput }
-                                  />
-                                </form>
-                              ) }
-                            </NewMessageContainer>
-                          ) : (
-                            'Log in to post messages'
-                          ) }
-                        </NewMessageBox>
-                      </FullVerticalContainer>
+  { ({ user }) => (
+    (!user || !user.uid) ? <LoadingComponent /> : (
+    <ChannelsContainer>
+    { ({ loading, channels }) => (
+        (loading && !channels.length) ? <LoadingComponent /> : (
+        <App centered={ false }>
+            <Split fixed flex='right'>
+            <FullVerticalSidebar colorIndex='neutral-1'>
+                <Header pad='medium'>
+                <Title>
+                    TallerChat <ChatIcon />
+                </Title>
+                
+                <NewChannelContainer channels={ channels }>
+                    { create => (
+                    <AddChannelButton
+                        icon={ <AddCircleIcon /> }
+                        onClick={ () => create(
+                        window.prompt('Name your new channel')
+                        ) }
+                    />
                     ) }
-                  </MessagesContainer>
-                ) }
+                </NewChannelContainer>
+                </Header>
 
-              </Split>
-            </App>
-          )
-        ) }
-      </ChannelsContainer>
+                <ShrinkMenuContainer flex='grow' justify='start'>
+                <Menu primary>
+                    { channels.map(({ name }) => (
+                    <Link key={ name } prefetch href={ `/messages/${name}` }>
+                        <Anchor className={ channel === name ? 'active' : '' }>
+                        # <b>{ name }</b>
+                        </Anchor>
+                    </Link>
+                    )) }
+                </Menu>
+                </ShrinkMenuContainer>
+
+                <NoShrinkFooter pad='medium'>
+                <Button icon={ <UserIcon /> } onClick={ console.log } />
+                <Button icon={ <LogoutIcon /> } onClick={ console.log } />
+                </NoShrinkFooter>
+            </FullVerticalSidebar>
+
+            { !user || !user.uid ? (
+                <LoadingComponent />
+            ) : (
+                <MessagesContainer channel={ channels.find(({ name }) => name === channel) }>
+                { ({ loading, messages }) => (
+                    <FullVerticalContainer>
+                    <StyledRoomHeader pad={ { vertical: 'small', horizontal: 'medium' } } justify='between'>
+                        <Title>
+                        { '#' + channel }
+                        </Title>
+                    </StyledRoomHeader>
+
+                    <ShrinkContainer flex='grow' justify='start'>
+                        <Box pad='medium' flex='grow'>
+                        { loading ? 'Loading...' : (
+                            messages.length === 0 ? 'No one talking here yet :(' : (
+                            messages.map(({ id, author, message }) => (
+                                <Box key={ id } pad='small' credit={ author }>
+                                <StyledAuthor>{ author }</StyledAuthor>
+                                <StyledMessage>{ message }</StyledMessage>
+                                </Box>
+                            ))
+                            )
+                        ) }
+                        </Box>
+                    </ShrinkContainer>
+
+                    <NewMessageBox pad='medium' direction='column'>
+                        { user && user.uid ? (
+                        <NewMessageContainer
+                            user={ user }
+                            channel={ channels.find(({ name }) => name === channel) }
+                        >
+                            { ({ handleSubmit }) => (
+                            <form onSubmit={ handleSubmit }>
+                                <NewMessageContainer.Message
+                                placeHolder='Message #general'
+                                component={ StyledTextInput }
+                                />
+                            </form>
+                            ) }
+                        </NewMessageContainer>
+                        ) : (
+                        'Log in to post messages'
+                        ) }
+                    </NewMessageBox>
+                    </FullVerticalContainer>
+                ) }
+                </MessagesContainer>
+            ) }
+
+            </Split>
+        </App>
+        )
     ) }
+    </ChannelsContainer>
+    )
+  ) }
   </CurrentUserContainer>
 )
 

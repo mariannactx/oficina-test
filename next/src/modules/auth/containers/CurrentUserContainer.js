@@ -19,22 +19,18 @@ const CurrentUserContainer = ({ children }) => (
   <Query query={ query }>
     { ({ ...result, loading, refetch, data }) => {
       
-      if(data.user && data.user.uid){
-        return children({ ...result, user: data.user })
-      }
-
       // Force a refetch on the client inside to make sure
       // the cached SSR anonymous user is replaced, in case
       // the user is already logged in..
       if (!loading && isClient()) {
         refetch().then( re => {
-            if(!re.data.user.uid){
-                Router.push('/');
-            }
+          if(!re.data.user.uid){
+            Router.push('/');
+          }
         })
       }
 
-      return null
+      return children({ ...result, user: data.user })
     } }
   </Query>
 )
